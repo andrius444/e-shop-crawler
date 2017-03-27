@@ -2,10 +2,7 @@ package nutrition.model;
 
 import nutrition.enumerator.Category;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by andrius on 3/26/17.
@@ -15,6 +12,7 @@ import javax.persistence.Id;
 public class Product {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
 
     private String name;
