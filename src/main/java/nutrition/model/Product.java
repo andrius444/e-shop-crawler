@@ -1,8 +1,7 @@
 package nutrition.model;
 
-import nutrition.enumerator.Category;
-
 import javax.persistence.*;
+import java.util.Random;
 
 /**
  * Created by andrius on 3/26/17.
@@ -16,20 +15,17 @@ public class Product {
     private Long id;
 
     private String name;
-    private Category category;
     private Double kcals;
     private Double fats;
     private Double carbs;
     private Double proteins;
 
-    public Product(String name, String category, Double kcals, Double fats, Double carbs, Double proteins) {
-        this.name = name;
-        this.category = this.setCategory(category.toUpperCase());
-        this.kcals = kcals;
-        this.fats = fats;
-        this.carbs = carbs;
-        this.proteins = proteins;
-    }
+    @ManyToOne(
+            cascade = {},
+            fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public Long getId() {
         return id;
@@ -49,13 +45,6 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public Category setCategory(String string) {
-        for (Category cat : Category.values()) {
-            if (cat.getValue().equals(string)) return cat;
-        }
-        return null;
     }
 
     public Double getKcals() {
@@ -90,4 +79,22 @@ public class Product {
         this.proteins = proteins;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this != o) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+        return name.equals(((Product)o).getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (id == null) ? 128 : id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + kcals.hashCode();
+        result = 31 * result + fats.hashCode();
+        result = 31 * result + carbs.hashCode();
+        result = 31 * result + proteins.hashCode();
+        result = 31 * result + category.hashCode();
+        return result;
+    }
 }

@@ -18,3 +18,5 @@ logs
 .log
 *.iml
 *.ipr
+
+database-dev.lock.db
