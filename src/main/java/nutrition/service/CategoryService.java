@@ -80,6 +80,7 @@ public class CategoryService {
     @Transactional
     public Category updateCategory(CategoryData data, Long id) {
         Category category = getOneCategory(id);
+        if (category == null) throw new EntityNotFoundException(String.format("Category not found with id [%d]", id));
         Category merged = mapUpdatingDataToEntity(data, category);
         return categoryRepository.save(merged);
     }

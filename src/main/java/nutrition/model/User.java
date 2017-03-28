@@ -32,10 +32,10 @@ public class User {
     private List<Meal> myMeals;
 
     @ManyToMany(
-            mappedBy = "inUsersFavorites",
-            cascade = {},
+            cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
     )
+    @JoinColumn(name = "favorite_product_id")
     private List<Product> myFavouriteProducts;
 
     public Long getId() {
@@ -82,4 +82,15 @@ public class User {
         this.myFavouriteProducts = myFavouriteProducts;
     }
 
+    // HELPER METHODS
+
+    public User addProductToFavorites(Product product) {
+        this.getMyFavouriteProducts().add(product);
+        return this;
+    }
+
+    public User removeProductFromFavorites(Product product) {
+        this.getMyFavouriteProducts().remove(product);
+        return this;
+    }
 }

@@ -74,6 +74,7 @@ public class ProductService {
     @Transactional
     public Product updateProduct(ProductData data, Long id) {
         Product product = getOneProduct(id);
+        if (product == null) throw new EntityNotFoundException(String.format("Product not found with id [%d]", id));
         Product merged = mapUpdatingDataToEntity(data, product);
         return productRepository.save(merged);
     }

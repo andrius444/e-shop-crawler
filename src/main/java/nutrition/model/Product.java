@@ -32,9 +32,9 @@ public class Product {
 
     @ManyToMany(
             cascade = {},
-            fetch = FetchType.EAGER
+            fetch = FetchType.EAGER,
+            mappedBy = "myFavouriteProducts"
     )
-    @JoinColumn(name = "in_user_favorites_id")
     private List<User> inUsersFavorites;
 
     public Long getId() {
@@ -87,6 +87,14 @@ public class Product {
 
     public void setProteins(Double proteins) {
         this.proteins = proteins;
+    }
+
+    public List<User> getInUsersFavorites() {
+        return inUsersFavorites;
+    }
+
+    public void setInUsersFavorites(List<User> inUsersFavorites) {
+        this.inUsersFavorites = inUsersFavorites;
     }
 
     @Override

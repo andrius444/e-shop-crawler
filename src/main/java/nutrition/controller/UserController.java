@@ -12,7 +12,7 @@ import javax.validation.Valid;
  * Created by osvaldas on 17.3.28.
  */
 @RestController
-@RequestMapping(value = "/")
+@RequestMapping(value = "api/user")
 public class UserController {
 
     @Autowired
@@ -22,12 +22,9 @@ public class UserController {
         this.service = service;
     }
 
-    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public User createUser (@Valid
-                            @RequestBody
-                            User newUser){
+    /*@PostMapping
+    public User createUser (@Valid @RequestBody UserData data, BindingResult result) {
         return service.createUser(newUser);
-    }
+    }*/
 
 }
