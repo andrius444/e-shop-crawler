@@ -79,7 +79,7 @@ public class ProductService {
         return productRepository.save(merged);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void deleteProduct(Long id) {
         productRepository.delete(id);
     }

@@ -13,8 +13,9 @@ public class MealDTO {
 
     private Long id;
     private String name;
+    private boolean approved;
     private Map<ProductDTO, Integer> ingredients;
-    private UserDTO owner;
+    private Long ownerId;
 
     public Long getId() {
         return id;
@@ -32,6 +33,14 @@ public class MealDTO {
         this.name = name;
     }
 
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
     public Map<ProductDTO, Integer> getIngredients() {
         return ingredients;
     }
@@ -40,12 +49,12 @@ public class MealDTO {
         this.ingredients = ingredients;
     }
 
-    public UserDTO getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(UserDTO owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
 }

@@ -1,7 +1,11 @@
 package nutrition.model;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by osvaldas on 17.3.27.
@@ -9,6 +13,8 @@ import java.util.List;
 
 @Entity
 public class User {
+
+    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,24 +25,24 @@ public class User {
 
     @OneToMany(
             mappedBy = "owner",
-            cascade = CascadeType.REMOVE,
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE},
             fetch = FetchType.EAGER
     )
-    private List<PersonalProduct> myPersonalProducts;
+    private Set<PersonalProduct> myPersonalProducts;            // FIXME MultipleBagFetchException workaround with Set
 
     @OneToMany(
             mappedBy = "owner",
-            cascade = CascadeType.REMOVE,
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE},
             fetch = FetchType.EAGER
     )
-    private List<Meal> myMeals;
+    private Set<Meal> myMeals;                                  // FIXME MultipleBagFetchException workaround with Set
 
     @ManyToMany(
             cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
     )
     @JoinColumn(name = "favorite_product_id")
-    private List<Product> myFavouriteProducts;
+    private Set<Product> myFavouriteProducts;                   // FIXME MultipleBagFetchException workaround with Set
 
     public Long getId() {
         return id;
@@ -55,30 +61,30 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = PASSWORD_ENCODER.encode(password);
     }
 
-    public List<PersonalProduct> getMyPersonalProducts() {
+    public Set<PersonalProduct> getMyPersonalProducts() {
         return myPersonalProducts;
     }
 
-    public void setMyPersonalProducts(List<PersonalProduct> myPersonalProducts) {
+    public void setMyPersonalProducts(Set<PersonalProduct> myPersonalProducts) {
         this.myPersonalProducts = myPersonalProducts;
     }
 
-    public List<Meal> getMyMeals() {
+    public Set<Meal> getMyMeals() {
         return myMeals;
     }
 
-    public void setMyMeals(List<Meal> myMeals) {
+    public void setMyMeals(Set<Meal> myMeals) {
         this.myMeals = myMeals;
     }
 
-    public List<Product> getMyFavouriteProducts() {
+    public Set<Product> getMyFavouriteProducts() {
         return myFavouriteProducts;
     }
 
-    public void setMyFavouriteProducts(List<Product> myFavouriteProducts) {
+    public void setMyFavouriteProducts(Set<Product> myFavouriteProducts) {
         this.myFavouriteProducts = myFavouriteProducts;
     }
 

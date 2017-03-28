@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,14 +36,14 @@ public class FavoritesService {
         User user = userService.getUserByEmail(loggedInEmail);
         Product product = productService.getOneProduct(prod_id);
         User stale = user.addProductToFavorites(product);
-        return userService.updateStaleUser(stale).getMyFavouriteProducts();
+        return new ArrayList<>(userService.updateStaleUser(stale).getMyFavouriteProducts());
     }
 
     public List<Product> removeProductFromFavorites(Long prod_id) {
         User user = authHelper.getLoggedInUser();
         Product product = productService.getOneProduct(prod_id);
         User stale = user.removeProductFromFavorites(product);
-        return userService.updateStaleUser(stale).getMyFavouriteProducts();
+        return new ArrayList<>(userService.updateStaleUser(stale).getMyFavouriteProducts());
     }
 
 }

@@ -1,72 +1,20 @@
 package nutrition.dto.product;
 
+import java.util.List;
+
 /**
  * Created by andrius on 3/27/17.
  */
 
-public class ProductDTO {
+public class ProductDTO extends AbstractProductDTO {
 
-    private Long id;
-    private String name;
-    private Double kcals;
-    private Double fats;
-    private Double carbs;
-    private Double proteins;
-    private Long categoryId;
+    private List<Long> inUsersFavoritesIds;
 
-    public Long getId() {
-        return id;
+    public List<Long> getInUsersFavoritesIds() {
+        return inUsersFavoritesIds;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getKcals() {
-        return kcals;
-    }
-
-    public void setKcals(Double kcals) {
-        this.kcals = kcals;
-    }
-
-    public Double getFats() {
-        return fats;
-    }
-
-    public void setFats(Double fats) {
-        this.fats = fats;
-    }
-
-    public Double getCarbs() {
-        return carbs;
-    }
-
-    public void setCarbs(Double carbs) {
-        this.carbs = carbs;
-    }
-
-    public Double getProteins() {
-        return proteins;
-    }
-
-    public void setProteins(Double proteins) {
-        this.proteins = proteins;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setInUsersFavoritesIds(List<Long> inUsersFavoritesIds) {
+        this.inUsersFavoritesIds = inUsersFavoritesIds;
     }
 }
