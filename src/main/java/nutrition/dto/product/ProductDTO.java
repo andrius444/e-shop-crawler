@@ -1,4 +1,4 @@
-package nutrition.dto;
+package nutrition.dto.product;
 
 /**
  * Created by andrius on 3/27/17.
@@ -7,6 +7,7 @@ package nutrition.dto;
 public class ProductDTO {
 
     private Long id;
+    private String name;
     private Double kcals;
     private Double fats;
     private Double carbs;
@@ -19,6 +20,14 @@ public class ProductDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Double getKcals() {

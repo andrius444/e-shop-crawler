@@ -1,6 +1,5 @@
 package nutrition.crawler;
 
-import nutrition.dto.ProductData;
 import nutrition.enumerator.Nutritions;
 import nutrition.model.Product;
 import nutrition.service.CategoryService;
@@ -37,7 +36,7 @@ public class Crawler {
                 .get()
                 .select(".b-categories-root-category")
                 .select("a[href]")
-                .subList(0, 1);
+                .subList(0, 5);
         List<String> categories = rootUrlsAnchors.stream()
                 .map(Element::text)
                 .collect(Collectors.toList());
@@ -98,6 +97,7 @@ public class Crawler {
                 rawProducts.add(raw);
                 productService.saveAll(rawProducts);
             });
+            System.out.println("=== CATEGORY " + (key+1) + " PERSISTED");
         });
 
         System.out.println("============== END CRAWL");

@@ -1,6 +1,9 @@
 package nutrition.model;
 
+import nutrition.validation.UniqueProductName;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -8,10 +11,10 @@ import java.util.Random;
  */
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Product {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
     private Long id;
 
     private String name;
@@ -26,6 +29,13 @@ public class Product {
     )
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToMany(
+            cascade = {},
+            fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "in_user_favorites_id")
+    private List<User> inUsersFavorites;
 
     public Long getId() {
         return id;

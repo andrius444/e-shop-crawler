@@ -1,7 +1,7 @@
 package nutrition.utils;
 
-import nutrition.dto.CategoryDTO;
-import nutrition.dto.ProductDTO;
+import nutrition.dto.category.CategoryDTO;
+import nutrition.dto.product.ProductDTO;
 import nutrition.model.Category;
 import nutrition.model.Product;
 

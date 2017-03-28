@@ -1,6 +1,7 @@
-package nutrition.dto;
+package nutrition.dto.product;
 
 import nutrition.model.Category;
+import nutrition.validation.UniqueProductName;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.DecimalMin;
@@ -15,6 +16,7 @@ public class ProductData {
 
     @NotNull(message = "Product name must be present")
     @NotBlank(message = "Product name must not be blank")
+    //@UniqueProductName(message = "There is already Product with such name")
     private String name;
 
     @NotNull(message = "K calories name must be present")

@@ -1,7 +1,7 @@
 package nutrition.service;
 
-import nutrition.dto.ProductDTO;
-import nutrition.dto.ProductData;
+import nutrition.dto.product.ProductDTO;
+import nutrition.dto.product.ProductData;
 import nutrition.enumerator.Nutritions;
 import nutrition.model.Product;
 import nutrition.repository.ProductRepository;
@@ -20,7 +20,6 @@ import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by andrius on 3/27/17.
@@ -56,6 +55,25 @@ public class ProductService {
         return DTOfactory.makeDTOlist(persisted);
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductDTO> findAll() {
+        Iterable<Product> iter = productRepository.findAll();
+        List<Product> persisted = new ArrayList<>(Transformer.makeCollection(iter));
+        return DTOfactory.makeDTOlist(persisted);
+    }
+
+    @Transactional(readOnly = true)
+    public Product findOne(Long id) {
+        return productRepository.findOne(id);
+    }
+
+    @Transactional(readOnly = true)
+    public long getCount() {
+        return productRepository.count();
+    }
+
+    // HELPER METHOD
+
     public Product makeRawProduct(Map<String, Double> nutritions, String productName, String categoryName) {
         ProductData data = new ProductData();
         data.setName(productName);
@@ -70,16 +88,6 @@ public class ProductService {
         validator.validate(data, bindingResult);
 
         return mapDataToEntity(data);
-    }
-
-    @Transactional(readOnly = true)
-    public Product findOne(Long id) {
-        return productRepository.findOne(id);
-    }
-
-    @Transactional(readOnly = true)
-    public long getCount() {
-        return productRepository.count();
     }
 
     // PRIVATE

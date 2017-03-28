@@ -6,40 +6,40 @@ import java.util.List;
 /**
  * Created by osvaldas on 17.3.27.
  */
+
 @Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
     private Long id;
 
     private String email;
     private String password;
 
-    @ManyToMany
-    @JoinTable(
-            name = "USER_PROD",
-            joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PROD_ID", referencedColumnName = "ID"))
-    private List<Product> favouriteProducts;
+    @OneToMany(
+            mappedBy = "owner",
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER
+    )
+    private List<PersonalProduct> myPersonalProducts;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "USER_FAVPROD",
-            joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PROD_ID", referencedColumnName = "ID"))
-    private List<Product> personalProducts;
+    @OneToMany(
+            mappedBy = "owner",
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER
+    )
+    private List<Meal> myMeals;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Meal> perosnalMeals;
+    @ManyToMany(
+            mappedBy = "inUsersFavorites",
+            cascade = {},
+            fetch = FetchType.EAGER
+    )
+    private List<Product> myFavouriteProducts;
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmail() {
@@ -58,27 +58,28 @@ public class User {
         this.password = password;
     }
 
-    public List<Product> getFavouriteProducts() {
-        return favouriteProducts;
+    public List<PersonalProduct> getMyPersonalProducts() {
+        return myPersonalProducts;
     }
 
-    public void setFavouriteProducts(List<Product> favouriteProducts) {
-        this.favouriteProducts = favouriteProducts;
+    public void setMyPersonalProducts(List<PersonalProduct> myPersonalProducts) {
+        this.myPersonalProducts = myPersonalProducts;
     }
 
-    public List<Product> getPersonalProducts() {
-        return personalProducts;
+    public List<Meal> getMyMeals() {
+        return myMeals;
     }
 
-    public void setPersonalProducts(List<Product> personalProducts) {
-        this.personalProducts = personalProducts;
+    public void setMyMeals(List<Meal> myMeals) {
+        this.myMeals = myMeals;
     }
 
-    public List<Meal> getPerosnalMeals() {
-        return perosnalMeals;
+    public List<Product> getMyFavouriteProducts() {
+        return myFavouriteProducts;
     }
 
-    public void setPerosnalMeals(List<Meal> perosnalMeals) {
-        this.perosnalMeals = perosnalMeals;
+    public void setMyFavouriteProducts(List<Product> myFavouriteProducts) {
+        this.myFavouriteProducts = myFavouriteProducts;
     }
+
 }

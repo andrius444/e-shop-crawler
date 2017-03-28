@@ -1,7 +1,7 @@
 package nutrition.service;
 
-import nutrition.dto.CategoryDTO;
-import nutrition.dto.CategoryData;
+import nutrition.dto.category.CategoryDTO;
+import nutrition.dto.category.CategoryData;
 import nutrition.model.Category;
 import nutrition.repository.CategoryRepository;
 import nutrition.utils.DTOfactory;

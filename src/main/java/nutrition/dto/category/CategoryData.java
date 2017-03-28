@@ -1,4 +1,4 @@
-package nutrition.dto;
+package nutrition.dto.category;
 
 import org.hibernate.validator.constraints.NotBlank;
 

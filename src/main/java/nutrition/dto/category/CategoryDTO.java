@@ -1,4 +1,6 @@
-package nutrition.dto;
+package nutrition.dto.category;
+
+import nutrition.dto.product.ProductDTO;
 
 import java.util.List;
 
