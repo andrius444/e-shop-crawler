@@ -12,9 +12,9 @@ import javax.validation.ConstraintValidatorContext;
 
 public class UniqueProductNameValidator implements ConstraintValidator<UniqueProductName, String> {
 
-   @Autowired
    private final ProductService productService;
 
+   @Autowired
    public UniqueProductNameValidator(ProductService productService) {
       this.productService = productService;
    }
@@ -25,7 +25,7 @@ public class UniqueProductNameValidator implements ConstraintValidator<UniquePro
       boolean isValid;
 
       if (value == null) return true;
-      isValid = productService.findAll()
+      isValid = productService.getAllProducts()
               .stream()
               .noneMatch(prod -> prod.getName().toLowerCase().equals(value.toLowerCase()));
 

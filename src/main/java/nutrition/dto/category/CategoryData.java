@@ -1,5 +1,6 @@
 package nutrition.dto.category;
 
+import nutrition.validation.UniqueCategoryName;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
@@ -15,6 +16,7 @@ public class CategoryData {
     @NotNull(message = "Category name must be present")
     @NotBlank(message = "Category name must not be blank")
     @Size(min = 6, message = "Category name must be min 6 chars")
+    //@UniqueCategoryName(message = "There is already a Category with such name")
     private String name;
 
     public String getName() {
