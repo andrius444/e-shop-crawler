@@ -1,11 +1,10 @@
 package nutrition.service;
 
-import nutrition.dto.product.ProductDTO;
 import nutrition.dto.product.ProductData;
 import nutrition.enumerator.Nutritions;
+import nutrition.exception.DataMappingException;
 import nutrition.model.Product;
 import nutrition.repository.ProductRepository;
-import nutrition.utils.DTOfactory;
 import nutrition.utils.Transformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -42,29 +42,28 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO saveProduct(ProductData data) {
+    public Product saveProduct(ProductData data) {
         Product product = mapDataToEntity(data);
-        Product persisted = productRepository.save(product);
-        return DTOfactory.makeDTO(persisted);
+        return productRepository.save(product);
     }
 
     @Transactional
-    public List<ProductDTO> saveAll(List<Product> rawProducts) {
+    public List<Product> saveAllProducts(List<Product> rawProducts) {
         Iterable<Product> iter = productRepository.save(rawProducts);
-        List<Product> persisted = new ArrayList<>(Transformer.makeCollection(iter));
-        return DTOfactory.makeDTOlist(persisted);
+        return new ArrayList<>(Transformer.makeCollection(iter));
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDTO> findAll() {
+    public List<Product> getAllProducts() {
         Iterable<Product> iter = productRepository.findAll();
-        List<Product> persisted = new ArrayList<>(Transformer.makeCollection(iter));
-        return DTOfactory.makeDTOlist(persisted);
+        return new ArrayList<>(Transformer.makeCollection(iter));
     }
 
     @Transactional(readOnly = true)
-    public Product findOne(Long id) {
-        return productRepository.findOne(id);
+    public Product getOneProduct(Long id) {
+        Product product = productRepository.findOne(id);
+        if (product == null) throw new EntityNotFoundException(String.format("Product not found with id [%d]", id));
+        return product;
     }
 
     @Transactional(readOnly = true)
@@ -72,34 +71,55 @@ public class ProductService {
         return productRepository.count();
     }
 
-    // HELPER METHOD
+    @Transactional
+    public Product updateProduct(ProductData data, Long id) {
+        Product product = getOneProduct(id);
+        Product merged = mapUpdatingDataToEntity(data, product);
+        return productRepository.save(merged);
+    }
 
-    public Product makeRawProduct(Map<String, Double> nutritions, String productName, String categoryName) {
+    @Transactional(readOnly = true)
+    public void deleteProduct(Long id) {
+        productRepository.delete(id);
+    }
+
+    // HELPER METHODS
+
+    public Product crawledDataToEntity(Map<String, Double> nutritions, String productName, String categoryName) {
         ProductData data = new ProductData();
         data.setName(productName);
         data.setKcals(nutritions.get(Nutritions.KCALS.getValue()));
         data.setFats(nutritions.get(Nutritions.FATS.getValue()));
         data.setCarbs(nutritions.get(Nutritions.CARBS.getValue()));
         data.setProteins(nutritions.get(Nutritions.PROTEINS.getValue()));
-        data.setCategory(categoryService.findCategoryByName(categoryName));
+        data.setCategory(categoryService.getCategoryByName(categoryName));
 
-        // FIXME if errors throw Exception
-        Errors bindingResult = new BeanPropertyBindingResult(data, "candidateData");
+        Errors bindingResult = new BeanPropertyBindingResult(data, "productData");
         validator.validate(data, bindingResult);
-
+        if (bindingResult.hasErrors())
+            throw new DataMappingException("Errors while creating crawled Product", bindingResult.getAllErrors());
         return mapDataToEntity(data);
     }
 
     // PRIVATE
 
     private Product mapDataToEntity(ProductData data) {
-        Product prod = new Product();
-        prod.setName(data.getName());
-        prod.setKcals(data.getKcals());
-        prod.setFats(data.getFats());
-        prod.setCarbs(data.getCarbs());
-        prod.setProteins(data.getProteins());
-        prod.setCategory(data.getCategory());
-        return prod;
+        Product product = new Product();
+        return mapCommonFields(data, product);
     }
+
+    private Product mapUpdatingDataToEntity(ProductData data, Product product) {
+        return mapCommonFields(data, product);
+    }
+
+    private Product mapCommonFields(ProductData data, Product product) {
+        product.setName(data.getName());
+        product.setKcals(data.getKcals());
+        product.setFats(data.getFats());
+        product.setCarbs(data.getCarbs());
+        product.setProteins(data.getProteins());
+        product.setCategory(data.getCategory());
+        return product;
+    }
+
 }

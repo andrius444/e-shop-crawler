@@ -31,13 +31,17 @@ public class DTOfactory {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         List<Product> products = entity.getProducts();
-        List<ProductDTO> prodDTOs = (products == null) ? new ArrayList<>() : makeDTOlist(products);
+        List<ProductDTO> prodDTOs = (products == null) ? new ArrayList<>() : makeProductDTOlist(products);
         dto.setProducts(prodDTOs);
         return dto;
     }
 
-    public static List<ProductDTO> makeDTOlist(List<Product> products) {
+    public static List<ProductDTO> makeProductDTOlist(List<Product> products) {
         return products.stream().map(DTOfactory::makeDTO).collect(Collectors.toList());
+    }
+
+    public static List<CategoryDTO> makeCategoryDTOlist(List<Category> categories) {
+        return categories.stream().map(DTOfactory::makeDTO).collect(Collectors.toList());
     }
 
 }

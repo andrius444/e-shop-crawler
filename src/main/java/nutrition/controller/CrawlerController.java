@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 
 @RestController
-@RequestMapping("api/crawler")
+@RequestMapping("api/crawlers")
 public class CrawlerController {
 
     private final Crawler crawler;

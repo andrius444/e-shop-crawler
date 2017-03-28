@@ -93,9 +93,9 @@ public class Crawler {
                 });
 
                 List<Product> rawProducts = new ArrayList<>();
-                Product raw = productService.makeRawProduct(nutritions, productName, categories.get(key));
+                Product raw = productService.crawledDataToEntity(nutritions, productName, categories.get(key));
                 rawProducts.add(raw);
-                productService.saveAll(rawProducts);
+                productService.saveAllProducts(rawProducts);
             });
             System.out.println("=== CATEGORY " + (key+1) + " PERSISTED");
         });
