@@ -1,4 +1,4 @@
-# nutrition-planner
+# e-shop crawler
 Crawler app. Gets products` nutrition-value info by crawling large E-store.
 
 `No-harm` app which simply gets each product`s nutrition values.
